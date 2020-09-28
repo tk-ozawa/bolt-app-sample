@@ -2,15 +2,22 @@ import { app } from "./config/bolt";
 import * as HelloController from "./helloController";
 import { UsersController } from "./users/users.controller";
 import { ItemsController } from "./items/items.controller";
+import { createConnection } from "typeorm";
+import { dbconfig } from "./config/db";
+
+(async () => {
+  await createConnection(dbconfig);
+})();
+
+app.message("hello", HelloController.hello);
+app.command("/echo", HelloController.echo);
+
+app.command("/echo", ItemsController.createItem);
+app.event("team_join", UsersController.joinTeam);
+// app.message("channel_leave", UsersController);
 
 (async () => {
   await app.start(process.env.PORT || 3000);
-
-  app.message("hello", HelloController.hello);
-  app.command("/echo", HelloController.echo);
-
-  app.event("team_join", UsersController.joinTeam);
-  app.command("/echo", ItemsController.createItem);
 
   console.log("⚡️ Bolt app is running!");
 })();

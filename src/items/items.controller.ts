@@ -1,6 +1,4 @@
 import { SlackCommandMiddlewareArgs } from "@slack/bolt";
-import { createConnection } from "typeorm";
-import { dbconfig } from "../config/db";
 import { UserRepository } from "../users/user.repository";
 import { ItemRepository } from "./item.repository";
 import { CreateItemDto } from "./dto/create-item.dto";
@@ -14,11 +12,9 @@ export class ItemsController {
     say,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
-
-    const db = await createConnection(dbconfig);
-    const itemRepository = db.getCustomRepository(ItemRepository);
-    const userRepository = db.getCustomRepository(UserRepository);
-    const themeRepository = db.getCustomRepository(ThemeRepository);
+    const itemRepository = new ItemRepository();
+    const userRepository = new UserRepository();
+    const themeRepository = new ThemeRepository();
 
     try {
       const findUserDto = new FindUserDto();
