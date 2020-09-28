@@ -9,7 +9,12 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
   },
   "compileOnSave": true,
   "include": [
