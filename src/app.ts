@@ -13,8 +13,9 @@ app.message("hello", HelloController.hello);
 app.command("/echo", HelloController.echo);
 
 app.command("/echo", ItemsController.createItem);
+
 app.event("team_join", UsersController.joinTeam);
-// app.message("channel_leave", UsersController);
+app.message("channel_leave", UsersController.leaveTeam);
 
 (async () => {
   await app.start(process.env.PORT || 3000);
