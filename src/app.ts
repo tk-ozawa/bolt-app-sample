@@ -1,5 +1,5 @@
 import { app } from "./config/bolt";
-import * as HelloController from "./helloController";
+import { SampleController } from "./sample/sample.controller";
 import { UsersController } from "./users/users.controller";
 import { ItemsController } from "./items/items.controller";
 import { createConnection } from "typeorm";
@@ -9,10 +9,10 @@ import { dbconfig } from "./config/db";
   await createConnection(dbconfig);
 })();
 
-app.message("hello", HelloController.hello);
-app.command("/echo", HelloController.echo);
+app.message("hello", SampleController.hello);
+app.command("/echo", SampleController.echo);
 
-app.command("/echo", ItemsController.createItem);
+app.command("/item", ItemsController.createItem);
 
 app.event("team_join", UsersController.joinTeam);
 app.message("channel_leave", UsersController.leaveTeam);
