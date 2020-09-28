@@ -9,7 +9,8 @@
     "serve": "node --require dotenv/config --inspect=0.0.0.0:9229 dist/app.js",
     "watch": "nodemon -L -w src -e ts -x \"npm run start\"",
     "dev": "node --inspect -r ts-node/register ./src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "announce:theme": "node dist/themes/switching-theme.command.js"
   },
   "keywords": [],
   "author": "",
