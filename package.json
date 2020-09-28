@@ -10,7 +10,8 @@
     "watch": "nodemon -L -w src -e ts -x \"npm run start\"",
     "dev": "node --inspect -r ts-node/register ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "announce:theme": "node dist/themes/switching-theme.command.js"
+    "announce:theme": "node dist/themes/switching-theme.command.js",
+    "introduce:item": "node dist/items/introduce-item.command.js"
   },
   "keywords": [],
   "author": "",

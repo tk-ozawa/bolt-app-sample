@@ -3,8 +3,8 @@ import { dbconfig } from "../config/db";
 import { ThemeRepository } from "./theme.repository";
 
 (async () => {
-  const db = await createConnection(dbconfig);
-  const themeRepository = db.getCustomRepository(ThemeRepository);
+  await createConnection(dbconfig);
+  const themeRepository = new ThemeRepository();
 
   try {
     const oldTheme = await themeRepository.findOne({ isOpen: true });
@@ -22,7 +22,6 @@ import { ThemeRepository } from "./theme.repository";
       openCount: result.min,
       isOpen: false,
     });
-
     newTheme.isOpen = true;
     newTheme.openCount++;
     await newTheme.save();

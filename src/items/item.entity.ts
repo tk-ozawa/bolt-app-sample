@@ -21,10 +21,10 @@ export class ItemEntity extends BaseEntity {
 
   @Column({
     type: "integer",
-    name: "announced_count",
+    name: "introduced_count",
     default: () => 0,
   })
-  public announcedCount!: number;
+  public introducedCount!: number;
 
   @Column({ type: "integer", name: "user_id" })
   public userId!: number;
