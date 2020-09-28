@@ -1,9 +1,9 @@
 import { app } from "./config/bolt";
-import { SampleController } from "./sample/sample.controller";
-import { UsersController } from "./users/users.controller";
-import { ItemsController } from "./items/items.controller";
-import { createConnection } from "typeorm";
 import { dbconfig } from "./config/db";
+import { createConnection } from "typeorm";
+import { SampleController } from "./sample/sample.controller";
+import { ItemsController } from "./items/items.controller";
+import { UsersController } from "./users/users.controller";
 
 (async () => {
   await createConnection(dbconfig);
