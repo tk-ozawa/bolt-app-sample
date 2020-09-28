@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { ItemEntity } from "../items/item.entity";
 
 @Entity()
 export class UserEntity extends BaseEntity {
@@ -11,4 +18,7 @@ export class UserEntity extends BaseEntity {
     length: 255,
   })
   public slackId!: string;
+
+  @OneToMany(() => ItemEntity, (item) => item.user, { eager: true })
+  public items?: ItemEntity[];
 }
