@@ -1,7 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [{
-    "name": "Docker: Attach to Node",
+    "name": "Docker: Attach to Bolt",
     "type": "node",
     "request": "attach",
     "port": 9229,
