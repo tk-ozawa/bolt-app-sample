@@ -5,7 +5,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { DeleteUserDto } from "./dto/delete-user.dto";
 
 export class UsersController {
-  private readonly userRepository;
+  private readonly userRepository: UserRepository;
 
   constructor() {
     this.userRepository = new UserRepository();

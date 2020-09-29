@@ -3,7 +3,7 @@ import { CreateThemeDto } from "./dto/create-theme.dto";
 import { SlackCommandMiddlewareArgs } from "@slack/bolt";
 
 export class ThemesController {
-  private readonly themeRepository;
+  private readonly themeRepository: ThemeRepository;
 
   constructor() {
     this.themeRepository = new ThemeRepository();

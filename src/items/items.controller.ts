@@ -10,8 +10,6 @@ import { ThemeRepository } from "../themes/theme.repository";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { FindUserDto } from "../users/dto/find-user.dto";
 import { EntryItemFormModal } from "./views/EntryItemFormModal";
-import { UserEntity } from "../users/user.entity";
-import { ThemeEntity } from "../themes/theme.entity";
 
 export class ItemsController {
   private readonly itemRepository: ItemRepository;
@@ -38,7 +36,7 @@ export class ItemsController {
     createItemDto.title = command.text;
 
     try {
-      const [user, theme]: [UserEntity, ThemeEntity] = await Promise.all([
+      const [user, theme] = await Promise.all([
         this.userRepository.findOneOrFail(findUserDto),
         this.themeRepository.getCurrentThemeOrFail(),
       ]);
