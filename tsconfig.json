@@ -15,10 +15,14 @@
       "esnext",
       "dom"
     ],
+    "jsx": "react",
+    "jsxFactory": "JSXSlack.h",
+    // NOTE: jsxFragmentFactory is available only in TypeScript >= v4.
+    "jsxFragmentFactory": "JSXSlack.Fragment"
   },
   "compileOnSave": true,
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts", "src/themes/views/AnnounceThemeMessage.tsx"
   ],
   "exclude": [
     "./node_modules",
