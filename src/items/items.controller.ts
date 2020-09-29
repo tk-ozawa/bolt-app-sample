@@ -1,32 +1,43 @@
 import { SlackCommandMiddlewareArgs } from "@slack/bolt";
 import { UserRepository } from "../users/user.repository";
 import { ItemRepository } from "./item.repository";
+import { ThemeRepository } from "../themes/theme.repository";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { FindUserDto } from "../users/dto/find-user.dto";
-import { ThemeRepository } from "../themes/theme.repository";
 
 export class ItemsController {
-  static async createItem({
+  private readonly itemRepository;
+  private readonly userRepository;
+  private readonly themeRepository;
+
+  constructor() {
+    this.itemRepository = new ItemRepository();
+    this.userRepository = new UserRepository();
+    this.themeRepository = new ThemeRepository();
+  }
+
+  async createItem({
     command,
     ack,
     say,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
-    const itemRepository = new ItemRepository();
-    const userRepository = new UserRepository();
-    const themeRepository = new ThemeRepository();
 
     try {
       const findUserDto = new FindUserDto();
       findUserDto.slackId = command.user_id;
-      const user = await userRepository.findOneOrFail(findUserDto);
+      const user = await this.userRepository.findOneOrFail(findUserDto);
 
       // 設定中のテーマを取得
-      const theme = await themeRepository.findOneOrFail({ isOpen: true });
+      const theme = await this.themeRepository.findOneOrFail({ isOpen: true });
 
       const createItemDto = new CreateItemDto();
       createItemDto.title = command.text;
-      const item = await itemRepository.createItem(createItemDto, user, theme);
+      const item = await this.itemRepository.createItem(
+        createItemDto,
+        user,
+        theme
+      );
       if (!item.theme) {
         throw new Error("テーマが存在しませんでした");
       }

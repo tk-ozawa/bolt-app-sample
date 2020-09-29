@@ -3,18 +3,23 @@ import { CreateThemeDto } from "./dto/create-theme.dto";
 import { SlackCommandMiddlewareArgs } from "@slack/bolt";
 
 export class ThemesController {
-  static async createTheme({
+  private readonly themeRepository;
+
+  constructor() {
+    this.themeRepository = new ThemeRepository();
+  }
+
+  async createTheme({
     command,
     ack,
     say,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
-    const themeRepository = new ThemeRepository();
     const createThemeDto = new CreateThemeDto();
     createThemeDto.title = command.text;
 
     try {
-      await themeRepository.createTheme(createThemeDto);
+      await this.themeRepository.createTheme(createThemeDto);
     } catch (err) {
       console.error(err);
     }

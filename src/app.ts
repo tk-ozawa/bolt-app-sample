@@ -4,18 +4,26 @@ import { createConnection } from "typeorm";
 import { SampleController } from "./sample/sample.controller";
 import { ItemsController } from "./items/items.controller";
 import { UsersController } from "./users/users.controller";
+import { ThemesController } from "./themes/themes.controller";
+
+const sampleController = new SampleController();
+const themesController = new ThemesController();
+const itemsController = new ItemsController();
+const usersController = new UsersController();
 
 (async () => {
   await createConnection(dbconfig);
 })();
 
-app.message("hello", SampleController.hello);
-app.command("/echo", SampleController.echo);
+app.message("hello", sampleController.hello);
+app.command("/echo", sampleController.echo);
 
-app.command("/item", ItemsController.createItem);
+app.command("/theme", themesController.createTheme);
 
-app.event("team_join", UsersController.joinTeam);
-app.message("channel_leave", UsersController.leaveTeam);
+app.command("/item", itemsController.createItem);
+
+app.event("team_join", usersController.joinTeam);
+app.message("channel_leave", usersController.leaveTeam);
 
 (async () => {
   await app.start(process.env.PORT || 3000);

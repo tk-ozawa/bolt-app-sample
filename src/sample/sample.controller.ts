@@ -4,18 +4,14 @@ import {
 } from "@slack/bolt";
 
 export class SampleController {
-  static async hello({
+  async hello({
     message,
     say,
   }: SlackEventMiddlewareArgs<"message">): Promise<void> {
     await say(`Hey there <@${message.user}>!`);
   }
 
-  static async echo({
-    command,
-    ack,
-    say,
-  }: SlackCommandMiddlewareArgs): Promise<void> {
+  async echo({ command, ack, say }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
 
     say(`Hello, ${command.user_name}!`);
