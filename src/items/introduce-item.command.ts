@@ -10,12 +10,13 @@ import { ThemeRepository } from "../themes/theme.repository";
   const themeRepository = new ThemeRepository();
 
   try {
-    const { id: themeId } = await themeRepository.getCurrentThemeOrFail();
-
-    const { min: introducedCount } = await itemRepository
-      .createQueryBuilder("items")
-      .select("MIN(items.introduced_count), min")
-      .getRawOne();
+    const [{ id: themeId }, { min: introducedCount }] = await Promise.all([
+      themeRepository.getCurrentThemeOrFail(),
+      itemRepository
+        .createQueryBuilder("items")
+        .select("MIN(items.introduced_count), min")
+        .getRawOne(),
+    ]);
 
     const item = await itemRepository.findOneOrFail({
       relations: ["user", "theme"],

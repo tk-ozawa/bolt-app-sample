@@ -11,16 +11,17 @@ import { AnnounceThemeMessage } from "./views/AnnounceThemeMessage";
   const userRepository = new UserRepository();
 
   try {
-    const oldTheme = await themeRepository.findOne({ isOpen: true });
+    const [oldTheme, { min: openCount }] = await Promise.all([
+      themeRepository.findOne({ isOpen: true }),
+      themeRepository
+        .createQueryBuilder("themes")
+        .select("MIN(themes.open_count), min")
+        .getRawOne(),
+    ]);
     if (oldTheme) {
       oldTheme.isOpen = !oldTheme.isOpen;
       await oldTheme.save();
     }
-
-    const { min: openCount } = await themeRepository
-      .createQueryBuilder("themes")
-      .select("MIN(themes.open_count), min")
-      .getRawOne();
 
     const newTheme = await themeRepository.findOneOrFail({
       openCount,
@@ -36,7 +37,7 @@ import { AnnounceThemeMessage } from "./views/AnnounceThemeMessage";
     const users = await userRepository.find();
     await Promise.all(
       users.map(async (user) => {
-        await app.client.chat.postMessage({
+        return await app.client.chat.postMessage({
           channel: user.slackId,
           text: "hogehoge",
           blocks: AnnounceThemeMessage(newTheme),
