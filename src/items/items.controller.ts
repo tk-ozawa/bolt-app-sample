@@ -1,14 +1,22 @@
-import { SlackCommandMiddlewareArgs } from "@slack/bolt";
+import {
+  SlackCommandMiddlewareArgs,
+  SlackActionMiddlewareArgs,
+  BlockAction,
+} from "@slack/bolt";
+import { app } from "../config/bolt";
 import { UserRepository } from "../users/user.repository";
 import { ItemRepository } from "./item.repository";
 import { ThemeRepository } from "../themes/theme.repository";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { FindUserDto } from "../users/dto/find-user.dto";
+import { EntryItemFormModal } from "./views/EntryItemFormModal";
+import { UserEntity } from "../users/user.entity";
+import { ThemeEntity } from "../themes/theme.entity";
 
 export class ItemsController {
-  private readonly itemRepository;
-  private readonly userRepository;
-  private readonly themeRepository;
+  private readonly itemRepository: ItemRepository;
+  private readonly userRepository: UserRepository;
+  private readonly themeRepository: ThemeRepository;
 
   constructor() {
     this.itemRepository = new ItemRepository();
@@ -17,11 +25,11 @@ export class ItemsController {
   }
 
   async create({
-    command,
     ack,
     say,
+    command,
   }: SlackCommandMiddlewareArgs): Promise<void> {
-    ack();
+    await ack();
 
     const findUserDto = new FindUserDto();
     findUserDto.slackId = command.user_id;
@@ -30,8 +38,10 @@ export class ItemsController {
     createItemDto.title = command.text;
 
     try {
-      const user = await this.userRepository.findOneOrFail(findUserDto);
-      const theme = await this.themeRepository.getCurrentThemeOrFail();
+      const [user, theme]: [UserEntity, ThemeEntity] = await Promise.all([
+        this.userRepository.findOneOrFail(findUserDto),
+        this.themeRepository.getCurrentThemeOrFail(),
+      ]);
       const item = await this.itemRepository.createItem(
         createItemDto,
         user,
@@ -41,11 +51,29 @@ export class ItemsController {
         throw new Error("テーマが存在しませんでした");
       }
 
-      say(
+      await say(
         `テーマ: ${item.theme.title}への アイテム: ${item.title}を登録しました！`
       );
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async openEntryModal({
+    ack,
+    body,
+  }: SlackActionMiddlewareArgs<BlockAction>): Promise<void> {
+    await ack();
+
+    try {
+      const theme = await this.themeRepository.getCurrentThemeOrFail();
+
+      await app.client.views.open({
+        trigger_id: body.trigger_id,
+        view: EntryItemFormModal(theme),
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 }

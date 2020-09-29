@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "dist",
     "module": "commonjs",
     "moduleResolution": "node",
     "removeComments": true,
@@ -11,21 +11,13 @@
     "target": "es2017",
     "noImplicitAny": false,
     "experimentalDecorators": true,
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "jsx": "react",
     "jsxFactory": "JSXSlack.h",
     // NOTE: jsxFragmentFactory is available only in TypeScript >= v4.
     "jsxFragmentFactory": "JSXSlack.Fragment"
   },
   "compileOnSave": true,
-  "include": [
-    "./src/**/*.ts", "src/themes/views/AnnounceThemeMessage.tsx"
-  ],
-  "exclude": [
-    "./node_modules",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

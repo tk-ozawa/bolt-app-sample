@@ -21,6 +21,7 @@ app.command("/echo", sampleController.echo);
 app.command("/theme", themesController.create);
 
 app.command("/item", itemsController.create);
+app.action("open_item_entry_form", itemsController.openEntryModal);
 
 app.event("team_join", usersController.joinTeam);
 app.message("channel_leave", usersController.leaveTeam);
