@@ -9,7 +9,7 @@ export class ThemesController {
     this.themeRepository = new ThemeRepository();
   }
 
-  async createTheme({
+  async create({
     command,
     ack,
     say,

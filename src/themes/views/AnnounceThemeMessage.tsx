@@ -19,7 +19,7 @@ export const AnnounceThemeMessage = ({ title }: ThemeEntity): any =>
         <p>あなたの {title} を教えてください！</p>
       </Section>
       <Actions>
-        <Button actionId="button_abc" style="primary">
+        <Button actionId="open_item_entry_form" style="primary">
           回答する
         </Button>
       </Actions>

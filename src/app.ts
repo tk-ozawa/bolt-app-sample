@@ -18,9 +18,9 @@ const usersController = new UsersController();
 app.message("hello", sampleController.hello);
 app.command("/echo", sampleController.echo);
 
-app.command("/theme", themesController.createTheme);
+app.command("/theme", themesController.create);
 
-app.command("/item", itemsController.createItem);
+app.command("/item", itemsController.create);
 
 app.event("team_join", usersController.joinTeam);
 app.message("channel_leave", usersController.leaveTeam);

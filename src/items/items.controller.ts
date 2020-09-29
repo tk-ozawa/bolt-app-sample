@@ -16,22 +16,22 @@ export class ItemsController {
     this.themeRepository = new ThemeRepository();
   }
 
-  async createItem({
+  async create({
     command,
     ack,
     say,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
 
+    const findUserDto = new FindUserDto();
+    findUserDto.slackId = command.user_id;
+
+    const createItemDto = new CreateItemDto();
+    createItemDto.title = command.text;
+
     try {
-      const findUserDto = new FindUserDto();
-      findUserDto.slackId = command.user_id;
       const user = await this.userRepository.findOneOrFail(findUserDto);
-
       const theme = await this.themeRepository.getCurrentThemeOrFail();
-
-      const createItemDto = new CreateItemDto();
-      createItemDto.title = command.text;
       const item = await this.itemRepository.createItem(
         createItemDto,
         user,
