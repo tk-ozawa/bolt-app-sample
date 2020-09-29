@@ -1,14 +1,18 @@
 import { createConnection } from "typeorm";
 import { dbconfig } from "../config/db";
-import { ItemRepository } from "./item.repository";
 import { app } from "../config/bolt";
+import { ItemRepository } from "./item.repository";
+import { ThemeRepository } from "../themes/theme.repository";
 
 (async () => {
   await createConnection(dbconfig);
   const itemRepository = new ItemRepository();
+  const themeRepository = new ThemeRepository();
 
   try {
-    const raw = await itemRepository
+    const { id: themeId } = await themeRepository.getCurrentThemeOrFail();
+
+    const { min: introducedCount } = await itemRepository
       .createQueryBuilder("items")
       .select("MIN(items.introduced_count), min")
       .getRawOne();
@@ -16,7 +20,8 @@ import { app } from "../config/bolt";
     const item = await itemRepository.findOneOrFail({
       relations: ["user", "theme"],
       where: {
-        introducedCount: raw.min,
+        introducedCount,
+        themeId,
       },
     });
     if (!item.user || !item.theme) {
@@ -32,6 +37,7 @@ import { app } from "../config/bolt";
       `,
     });
     item.introducedCount++;
+    await item.save();
 
     console.log(result);
   } catch (err) {

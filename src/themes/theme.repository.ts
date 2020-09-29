@@ -11,4 +11,8 @@ export class ThemeRepository extends Repository<ThemeEntity> {
     await theme.save();
     return theme;
   }
+
+  getCurrentThemeOrFail(): Promise<ThemeEntity> {
+    return this.findOneOrFail({ isOpen: true });
+  }
 }

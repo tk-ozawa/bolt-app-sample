@@ -1,6 +1,6 @@
 import { SlackEventMiddlewareArgs } from "@slack/bolt";
-import { UserRepository } from "./user.repository";
 import { app } from "../config/bolt";
+import { UserRepository } from "./user.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DeleteUserDto } from "./dto/delete-user.dto";
 

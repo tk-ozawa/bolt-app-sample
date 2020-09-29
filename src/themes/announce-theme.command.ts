@@ -13,13 +13,13 @@ import { ThemeRepository } from "./theme.repository";
       await oldTheme.save();
     }
 
-    const result = await themeRepository
+    const { min: openCount } = await themeRepository
       .createQueryBuilder("themes")
       .select("MIN(themes.open_count), min")
       .getRawOne();
 
     const newTheme = await themeRepository.findOneOrFail({
-      openCount: result.min,
+      openCount,
       isOpen: false,
     });
     newTheme.isOpen = true;

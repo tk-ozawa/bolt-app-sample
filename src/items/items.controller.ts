@@ -28,8 +28,7 @@ export class ItemsController {
       findUserDto.slackId = command.user_id;
       const user = await this.userRepository.findOneOrFail(findUserDto);
 
-      // 設定中のテーマを取得
-      const theme = await this.themeRepository.findOneOrFail({ isOpen: true });
+      const theme = await this.themeRepository.getCurrentThemeOrFail();
 
       const createItemDto = new CreateItemDto();
       createItemDto.title = command.text;
