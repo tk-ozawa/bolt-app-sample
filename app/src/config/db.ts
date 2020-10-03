@@ -9,5 +9,5 @@ export const dbconfig: ConnectionOptions = {
   database: String(process.env.DB_NAME),
   synchronize: false,
   logging: false,
-  entities: ["entities/*.ts"],
+  entities: ["**/*.entitiy.ts"],
 };
