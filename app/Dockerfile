@@ -5,7 +5,4 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN apk update && \
-  npm install -g npm && \
-  npm install
-
-COPY . .
+  npm install -g npm
