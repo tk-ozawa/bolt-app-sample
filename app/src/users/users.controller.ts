@@ -3,6 +3,7 @@ import { app } from "../config/bolt";
 import { UserRepository } from "./user.repository";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DeleteUserDto } from "./dto/delete-user.dto";
+import { validateOrReject } from "class-validator";
 
 export class UsersController {
   private readonly userRepository: UserRepository;
@@ -18,6 +19,8 @@ export class UsersController {
     createUserDto.slackId = `${event.user}`;
 
     try {
+      await validateOrReject(createUserDto);
+
       const user = await this.userRepository.createUser(createUserDto);
 
       const result = await app.client.chat.postMessage({
@@ -37,6 +40,8 @@ export class UsersController {
     deleteUserDto.slackId = `${message.user}`;
 
     try {
+      await validateOrReject(deleteUserDto);
+
       const { id } = await this.userRepository.findOneOrFail({
         ...deleteUserDto,
       });

@@ -10,6 +10,7 @@ import { ThemeRepository } from "../themes/theme.repository";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { FindUserDto } from "../users/dto/find-user.dto";
 import { EntryItemFormModal } from "./views/EntryItemFormModal";
+import { validate } from "class-validator";
 
 export class ItemsController {
   private readonly itemRepository: ItemRepository;
@@ -34,6 +35,18 @@ export class ItemsController {
 
     const createItemDto = new CreateItemDto();
     createItemDto.title = command.text;
+
+    let isError = false;
+    [findUserDto, createItemDto].forEach(async (dto) => {
+      const errors = await validate(dto);
+      if (errors.length > 0) {
+        await say(`validation failed. errors: ${errors}`);
+        isError = true;
+      }
+    });
+    if (isError) {
+      return;
+    }
 
     try {
       const [user, theme] = await Promise.all([
