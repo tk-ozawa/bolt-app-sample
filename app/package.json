@@ -6,9 +6,10 @@
   "scripts": {
     "start": "npm run build && npm run serve",
     "build": "tsc",
-    "serve": "node --require dotenv/config --inspect=0.0.0.0:9229 dist/app.js",
-    "watch": "nodemon -L -w src -e ts -x \"npm run start\"",
-    "dev": "node --inspect -r ts-node/register ./src/app.ts",
+    "serve": "node --require dotenv/config --inspect=0.0.0.0:9229 --experimental-modules dist/app.js",
+    "sub": "nodemon -L -w src -e ts -x \"npm run start\"",
+    "watch": "ts-node-dev --inspect=0.0.0.0:9229 ./src/app.ts",
+    "wat": "node --inspect=0.0.0.0:9229 --inspect-brk -r ts-node/register ./src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "announce:theme": "node dist/themes/switching-theme.command.js",
     "introduce:item": "node dist/items/introduce-item.command.js"
