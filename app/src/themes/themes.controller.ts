@@ -1,21 +1,19 @@
-import { ThemeRepository } from "./theme.repository";
-import { CreateThemeDto } from "./dto/create-theme.dto";
 import { SlackCommandMiddlewareArgs } from "@slack/bolt";
 import { validate } from "class-validator";
+import { getCustomRepository } from "typeorm";
+import { CreateThemeDto } from "./dto/create-theme.dto";
+import { ThemeRepository } from "./theme.repository";
 
 export class ThemesController {
-  private readonly themeRepository: ThemeRepository;
-
-  constructor() {
-    this.themeRepository = new ThemeRepository();
-  }
-
   async create({
     command,
     ack,
     say,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     ack();
+
+    const themeRepository = getCustomRepository(ThemeRepository);
+
     const createThemeDto = new CreateThemeDto();
     createThemeDto.title = command.text;
 
@@ -25,10 +23,8 @@ export class ThemesController {
       return;
     }
 
-    console.log(this.themeRepository);
-
     try {
-      await this.themeRepository.createTheme(createThemeDto);
+      await themeRepository.createTheme(createThemeDto);
     } catch (err) {
       console.error(err);
       say("登録に失敗しました…");

@@ -11,24 +11,19 @@ import { CreateItemDto } from "./dto/create-item.dto";
 import { FindUserDto } from "../users/dto/find-user.dto";
 import { EntryItemFormModal } from "./views/EntryItemFormModal";
 import { validate } from "class-validator";
+import { getCustomRepository } from "typeorm";
 
 export class ItemsController {
-  private readonly itemRepository: ItemRepository;
-  private readonly userRepository: UserRepository;
-  private readonly themeRepository: ThemeRepository;
-
-  constructor() {
-    this.itemRepository = new ItemRepository();
-    this.userRepository = new UserRepository();
-    this.themeRepository = new ThemeRepository();
-  }
-
   async create({
     ack,
     say,
     command,
   }: SlackCommandMiddlewareArgs): Promise<void> {
     await ack();
+
+    const itemRepository = getCustomRepository(ItemRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const themeRepository = getCustomRepository(ThemeRepository);
 
     const findUserDto = new FindUserDto();
     findUserDto.slackId = command.user_id;
@@ -50,14 +45,10 @@ export class ItemsController {
 
     try {
       const [user, theme] = await Promise.all([
-        this.userRepository.findOneOrFail(findUserDto),
-        this.themeRepository.getCurrentThemeOrFail(),
+        userRepository.findOneOrFail(findUserDto),
+        themeRepository.getCurrentThemeOrFail(),
       ]);
-      const item = await this.itemRepository.createItem(
-        createItemDto,
-        user,
-        theme
-      );
+      const item = await itemRepository.createItem(createItemDto, user, theme);
       if (!item.theme) {
         throw new Error("テーマが存在しませんでした");
       }
@@ -76,8 +67,10 @@ export class ItemsController {
   }: SlackActionMiddlewareArgs<BlockAction>): Promise<void> {
     await ack();
 
+    const themeRepository = getCustomRepository(ThemeRepository);
+
     try {
-      const theme = await this.themeRepository.getCurrentThemeOrFail();
+      const theme = await themeRepository.getCurrentThemeOrFail();
 
       await app.client.views.open({
         trigger_id: body.trigger_id,

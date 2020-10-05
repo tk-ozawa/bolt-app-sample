@@ -6,15 +6,17 @@ import { ItemsController } from "./items/items.controller";
 import { UsersController } from "./users/users.controller";
 import { ThemesController } from "./themes/themes.controller";
 
+(async () => {
+  const connection = await createConnection(dbconfig);
+  await connection.synchronize();
+})();
+
 const sampleController = new SampleController();
 const themesController = new ThemesController();
 const itemsController = new ItemsController();
 const usersController = new UsersController();
 
 (async () => {
-  const connection = await createConnection(dbconfig);
-  await connection.synchronize();
-
   app.message("hello", sampleController.hello);
   app.command("/echo", sampleController.echo);
 
