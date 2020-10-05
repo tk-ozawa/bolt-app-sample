@@ -1,4 +1,7 @@
 import { ConnectionOptions } from "typeorm";
+import { UserEntity } from "../users/user.entity";
+import { ItemEntity } from "../items/item.entity";
+import { ThemeEntity } from "../themes/theme.entity";
 
 export const dbconfig: ConnectionOptions = {
   type: "postgres",
@@ -7,7 +10,12 @@ export const dbconfig: ConnectionOptions = {
   username: String(process.env.DB_USERNAME),
   password: String(process.env.DB_PASSWORD),
   database: String(process.env.DB_NAME),
-  synchronize: false,
+  synchronize: true,
   logging: false,
-  entities: ["**/*.entitiy.ts"],
+  entities: [
+    // "../**/*.entity{.ts,.js}"
+    UserEntity,
+    ItemEntity,
+    ThemeEntity,
+  ],
 };

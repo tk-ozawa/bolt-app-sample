@@ -11,7 +11,9 @@ import {
 import { UserEntity } from "../users/user.entity";
 import { ThemeEntity } from "../themes/theme.entity";
 
-@Entity()
+@Entity({
+  name: "items",
+})
 export class ItemEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id!: number;

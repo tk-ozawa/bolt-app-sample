@@ -25,10 +25,14 @@ export class ThemesController {
       return;
     }
 
+    console.log(this.themeRepository);
+
     try {
       await this.themeRepository.createTheme(createThemeDto);
     } catch (err) {
       console.error(err);
+      say("登録に失敗しました…");
+      return;
     }
 
     say(`テーマ: ${command.text}を登録しました！`);

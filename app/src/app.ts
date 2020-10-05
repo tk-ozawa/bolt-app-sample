@@ -12,21 +12,20 @@ const itemsController = new ItemsController();
 const usersController = new UsersController();
 
 (async () => {
-  await createConnection(dbconfig);
-})();
+  const connection = await createConnection(dbconfig);
+  await connection.synchronize();
 
-app.message("hello", sampleController.hello);
-app.command("/echo", sampleController.echo);
+  app.message("hello", sampleController.hello);
+  app.command("/echo", sampleController.echo);
 
-app.command("/theme", themesController.create);
+  app.command("/theme", themesController.create);
 
-app.command("/item", itemsController.create);
-app.action("open_item_entry_form", itemsController.openEntryModal);
+  app.command("/item", itemsController.create);
+  app.action("open_item_entry_form", itemsController.openEntryModal);
 
-app.event("team_join", usersController.joinTeam);
-app.message("channel_leave", usersController.leaveTeam);
+  app.event("team_join", usersController.joinTeam);
+  app.message("channel_leave", usersController.leaveTeam);
 
-(async () => {
   await app.start(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
