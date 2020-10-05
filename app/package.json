@@ -7,9 +7,9 @@
     "start": "npm run build && npm run serve",
     "build": "tsc",
     "serve": "node --require dotenv/config --inspect=0.0.0.0:9229 --experimental-modules dist/app.js",
-    "sub": "nodemon -L -w src -e ts -x \"npm run start\"",
-    "watch": "ts-node-dev --inspect=0.0.0.0:9229 ./src/app.ts",
-    "wat": "node --inspect=0.0.0.0:9229 --inspect-brk -r ts-node/register ./src/app.ts",
+    "watch": "nodemon -L -w src -e ts -x \"npm run start\"",
+    "sub": "ts-node-dev --inspect=0.0.0.0:9229 ./src/app.ts",
+    "wat": "nodemon -L -w src -e ts -x \"node --inspect=0.0.0.0:9229 --inspect-brk -r ts-node/register ./src/app.ts --transpile-only\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "announce:theme": "node dist/themes/switching-theme.command.js",
     "introduce:item": "node dist/items/introduce-item.command.js"
