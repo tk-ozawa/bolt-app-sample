@@ -3,3 +3,5 @@ db/data
 php/log
 .vscode
 node_modules
+.env
+/dist
