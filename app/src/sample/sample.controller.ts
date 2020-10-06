@@ -8,6 +8,12 @@ export class SampleController {
     message,
     say,
   }: SlackEventMiddlewareArgs<"message">): Promise<void> {
+    console.log(message);
+
+    const a = 1;
+
+    console.log(a);
+
     await say(`Hey there <@${message.user}>!`);
   }
 

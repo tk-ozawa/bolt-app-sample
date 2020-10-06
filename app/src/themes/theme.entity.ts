@@ -9,7 +9,9 @@ import {
 } from "typeorm";
 import { ItemEntity } from "../items/item.entity";
 
-@Entity()
+@Entity({
+  name: "themes",
+})
 export class ThemeEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   public id!: number;
