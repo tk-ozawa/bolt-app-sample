@@ -1,6 +1,7 @@
 import {
   SlackCommandMiddlewareArgs,
   SlackActionMiddlewareArgs,
+  SlackViewMiddlewareArgs,
   BlockAction,
 } from "@slack/bolt";
 import { app } from "../config/bolt";
@@ -73,5 +74,43 @@ export class ItemsController {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async createItem({
+    view,
+    body,
+    ack,
+  }: SlackViewMiddlewareArgs): Promise<void> {
+    await ack();
+
+    console.log(view);
+    return;
+
+    const findUserDto = new FindUserDto();
+    findUserDto.slackId = body.user.id;
+
+    const createItemDto = new CreateItemDto();
+    // createItemDto.title = command.text;
+
+    // try {
+    //   const [user, theme] = await Promise.all([
+    //     this.userRepository.findOneOrFail(findUserDto),
+    //     this.themeRepository.getCurrentThemeOrFail(),
+    //   ]);
+    //   const item = await this.itemRepository.createItem(
+    //     createItemDto,
+    //     user,
+    //     theme
+    //   );
+    //   if (!item.theme.) {
+    //     throw new Error("テーマが存在しませんでした");
+    //   }
+
+    //   await say(
+    //     `テーマ: ${item.theme.title}への アイテム: ${item.title}を登録しました！`
+    //   );
+    // } catch (err) {
+    //   console.error(err);
+    // }
   }
 }

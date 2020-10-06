@@ -4,7 +4,7 @@ import { ThemeEntity } from "../../themes/theme.entity";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const EntryItemFormModal = ({ title }: ThemeEntity): any =>
   JSXSlack(
-    <Modal title="Item" close="Cancel" callbackId="entry_item">
+    <Modal title="Item" close="Cancel" callbackId="create_item">
       <Section>
         <p>あなたの {title} を教えてください！</p>
       </Section>
